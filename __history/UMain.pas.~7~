@@ -1,0 +1,68 @@
+unit UMain;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, inifiles;
+
+type
+  TFMAIN = class(TForm)
+    Panel1: TPanel;
+    Label1: TLabel;
+    Timer1: TTimer;
+    Label2: TLabel;
+    Edit1: TEdit;
+    Label3: TLabel;
+    Label4: TLabel;
+    Edit2: TEdit;
+    Edit3: TEdit;
+    procedure Timer1Timer(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FMAIN: TFMAIN;
+
+implementation
+
+{$R *.dfm}
+
+procedure TFMAIN.FormClose(Sender: TObject; var Action: TCloseAction);
+var
+ ini:tinifile;
+begin
+ ini:=Tinifile.Create(extractfilepath(paramstr(0))+'settings.ini');
+ Edit1.Text:=ini.ReadString('Place','aud','000');
+ Edit2.Text:=ini.ReadString('Place','build','000');
+ Edit3.Text:=ini.ReadString('Place','depart','000');
+ ini.free;
+end;
+
+procedure TFMAIN.FormCreate(Sender: TObject);
+var
+ ini:tinifile;
+begin
+ Label1.Caption:=datetostr(date);
+ ini:=Tinifile.Create(extractfilepath(paramstr(0))+'settings.ini');
+ ini.WriteString('Place','aud',Edit1.Text);
+ ini.WriteString('Place','build',Edit2.Text);
+ ini.WriteString('Place','depart',Edit3.Text);
+
+
+
+ ini.Free;
+end;
+
+procedure TFMAIN.Timer1Timer(Sender: TObject);
+
+begin
+  Label1.Caption:=datetostr(date);
+end;
+
+end.
